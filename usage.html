@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>KC-Vue Copilot Customizations 使用说明</title>
+    <style>
+      :root {
+        --bg: #f7f4ee;
+        --ink: #22201c;
+        --muted: #6a6358;
+        --accent: #c26b2f;
+        --accent-2: #1f6f7a;
+        --card: #ffffff;
+        --border: #e2d9cf;
+        --shadow: 0 12px 30px rgba(34, 32, 28, 0.12);
+        --mono: "IBM Plex Mono", "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        --sans: "Space Grotesk", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+        --serif: "Source Serif 4", "Times New Roman", serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: var(--sans);
+        color: var(--ink);
+        background:
+          radial-gradient(1200px 600px at 80% -10%, rgba(194, 107, 47, 0.16), transparent 60%),
+          radial-gradient(900px 500px at 10% 10%, rgba(31, 111, 122, 0.18), transparent 50%),
+          var(--bg);
+      }
+
+      header {
+        padding: 64px 6vw 32px;
+        display: grid;
+        gap: 16px;
+        align-items: center;
+      }
+
+      .eyebrow {
+        font-family: var(--mono);
+        font-size: 13px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--accent-2);
+      }
+
+      h1 {
+        font-size: clamp(32px, 4vw, 56px);
+        margin: 0;
+        font-weight: 600;
+      }
+
+      .lead {
+        font-family: var(--serif);
+        font-size: clamp(16px, 2vw, 20px);
+        max-width: 680px;
+        color: var(--muted);
+      }
+
+      main {
+        display: grid;
+        gap: 24px;
+        padding: 16px 6vw 72px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 18px;
+      }
+
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 20px 22px;
+        box-shadow: var(--shadow);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .card::after {
+        content: "";
+        position: absolute;
+        inset: auto -40px -60px auto;
+        width: 140px;
+        height: 140px;
+        background: radial-gradient(circle, rgba(194, 107, 47, 0.2), transparent 70%);
+        transform: rotate(10deg);
+      }
+
+      h2 {
+        margin: 0 0 12px;
+        font-size: 20px;
+      }
+
+      h3 {
+        margin: 0 0 8px;
+        font-size: 16px;
+      }
+
+      ul {
+        margin: 0;
+        padding-left: 18px;
+        color: var(--muted);
+      }
+
+      .steps {
+        display: grid;
+        gap: 12px;
+      }
+
+      .step {
+        display: grid;
+        gap: 6px;
+        padding: 14px 16px;
+        border: 1px dashed var(--border);
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.8);
+      }
+
+      code,
+      .mono {
+        font-family: var(--mono);
+        color: var(--ink);
+      }
+
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .chip {
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 6px 12px;
+        font-size: 12px;
+        color: var(--muted);
+        background: #fffaf4;
+      }
+
+      .callout {
+        border-left: 4px solid var(--accent);
+        padding: 16px 18px;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 12px;
+      }
+
+      .detail {
+        display: grid;
+        gap: 10px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      pre {
+        margin: 12px 0 0;
+        padding: 12px 14px;
+        border-radius: 12px;
+        background: #12110f;
+        color: #f5f0e8;
+        overflow-x: auto;
+        border: 1px solid rgba(194, 107, 47, 0.35);
+        font-family: var(--mono);
+        font-size: 12.5px;
+        line-height: 1.5;
+      }
+
+      footer {
+        padding: 40px 6vw 64px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .fade-up {
+        animation: fadeUp 0.8s ease forwards;
+        opacity: 0;
+      }
+
+      .delay-1 {
+        animation-delay: 0.1s;
+      }
+
+      .delay-2 {
+        animation-delay: 0.2s;
+      }
+
+      .delay-3 {
+        animation-delay: 0.3s;
+      }
+
+      @keyframes fadeUp {
+        from {
+          transform: translateY(18px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      @media (max-width: 600px) {
+        header {
+          padding: 48px 6vw 24px;
+        }
+
+        .card {
+          padding: 18px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="eyebrow">KC-Vue / Copilot Customizations</div>
+      <h1>使用说明与交付流程</h1>
+      <p class="lead">
+        本页总结了本仓库的自定义 Agent、Skills、命令、模板与插件治理规则。目标是确保
+        需求一致性与交付完整性。
+      </p>
+    </header>
+
+    <main>
+      <section class="card fade-up">
+        <h2>推荐流程</h2>
+        <div class="steps">
+          <div class="step">
+            <strong>1. 输入准备</strong>
+            <span class="mono">development-input-template.md + requirement-traceability-template.md</span>
+          </div>
+          <div class="step">
+            <strong>2. 开发与验证</strong>
+            <span class="mono">/frontend 或终端命令 (tsc + build)</span>
+          </div>
+          <div class="step">
+            <strong>3. 输出交付</strong>
+            <span class="mono">development-output-template.md + change-summary-template.md</span>
+          </div>
+          <div class="step">
+            <strong>4. 审查合并</strong>
+            <span class="mono">frontend-review Agent + Git workflow</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="grid">
+        <div class="card fade-up delay-1">
+          <h2>Agents</h2>
+          <ul>
+            <li><strong>frontend</strong>：需求驱动交付与前端实现主力。</li>
+            <li><strong>frontend-review</strong>：需求一致性审查与门禁。</li>
+          </ul>
+          <div class="chips">
+            <span class="chip">@frontend</span>
+            <span class="chip">@frontend-review</span>
+          </div>
+        </div>
+        <div class="card fade-up delay-2">
+          <h2>Skills</h2>
+          <ul>
+            <li>/requirement-driven-delivery</li>
+            <li>/frontend-component</li>
+            <li>/frontend-testing</li>
+            <li>/frontend-performance</li>
+            <li>/development-docs</li>
+          </ul>
+        </div>
+        <div class="card fade-up delay-3">
+          <h2>Commands</h2>
+          <ul>
+            <li>/frontend</li>
+            <li>/frontend-gate</li>
+            <li>/git-workflow</li>
+            <li>/large-project</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="grid">
+        <div class="card fade-up delay-1">
+          <h2>Templates</h2>
+          <ul>
+            <li>development-input-template.md</li>
+            <li>requirement-traceability-template.md</li>
+            <li>development-output-template.md</li>
+            <li>change-summary-template.md</li>
+            <li>pr-merge-checklist-template.md</li>
+            <li>git-commit-template.md</li>
+          </ul>
+        </div>
+        <div class="card fade-up delay-2">
+          <h2>Instructions</h2>
+          <ul>
+            <li>frontend.instructions.md</li>
+            <li>requirements-guard.instructions.md</li>
+            <li>git-workflow.instructions.md</li>
+            <li>large-project.instructions.md</li>
+          </ul>
+        </div>
+        <div class="card fade-up delay-3">
+          <h2>Plugins</h2>
+          <ul>
+            <li>Vue.volar</li>
+            <li>dbaeumer.vscode-eslint</li>
+            <li>esbenp.prettier-vscode</li>
+            <li>christian-kohler.path-intellisense</li>
+            <li>eamodio.gitlens</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="grid">
+        <div class="card fade-up delay-1">
+          <h2>Instructions 使用方式</h2>
+          <ul>
+            <li>对 src 目录改动时自动加载约束。</li>
+            <li>需求不清晰时默认最小实现并记录偏差。</li>
+          </ul>
+          <pre><code>当请求“新增页面”时，必须先提供需求条目与范围。
+当请求“提交合并”时，必须符合 Conventional Commits。</code></pre>
+        </div>
+        <div class="card fade-up delay-2">
+          <h2>Skills 使用方式</h2>
+          <ul>
+            <li>以 /skill-name 调用流程化产出。</li>
+            <li>输出包含覆盖矩阵与验证结果。</li>
+          </ul>
+          <pre><code>/requirement-driven-delivery
+需求来源：PRD-2026-03
+目标：列表筛选（仅需求内字段）</code></pre>
+        </div>
+        <div class="card fade-up delay-3">
+          <h2>Commands 使用方式</h2>
+          <ul>
+            <li>支持 /command-name 或终端执行。</li>
+            <li>交付门禁按 Gate-1~Gate-5 执行。</li>
+          </ul>
+          <pre><code>/frontend-gate
+npx tsc --noEmit
+npm run build</code></pre>
+        </div>
+      </section>
+
+      <section class="grid">
+        <div class="card fade-up delay-1">
+          <h2>Instructions 逐项说明</h2>
+          <div class="detail">
+            <strong>frontend.instructions</strong>
+            <span>限制需求外 UI/交互扩展，只允许最小改动。</span>
+            <strong>requirements-guard.instructions</strong>
+            <span>强制需求条目与实现映射。</span>
+            <strong>git-workflow.instructions</strong>
+            <span>提交格式与 PR 合并要素约束。</span>
+            <strong>large-project.instructions</strong>
+            <span>需求/文件量大时强制分批交付。</span>
+          </div>
+          <pre><code>feat(order): 新增状态筛选
+Batch-1 主流程 / Batch-2 守卫</code></pre>
+        </div>
+        <div class="card fade-up delay-2">
+          <h2>Skills 逐项说明</h2>
+          <div class="detail">
+            <strong>requirement-driven-delivery</strong>
+            <span>拆解需求并输出覆盖矩阵。</span>
+            <strong>frontend-component</strong>
+            <span>组件改造规范与接口设计。</span>
+            <strong>frontend-testing</strong>
+            <span>回归测试与风险点验证。</span>
+            <strong>frontend-performance</strong>
+            <span>性能定位与最小优化。</span>
+            <strong>development-docs</strong>
+            <span>输入/输出文档化。</span>
+          </div>
+          <pre><code>/frontend-component
+组件：src/components/OrderList.vue
+props/emits：显式类型</code></pre>
+        </div>
+        <div class="card fade-up delay-3">
+          <h2>Commands 逐项说明</h2>
+          <div class="detail">
+            <strong>/frontend</strong>
+            <span>开发与质量命令集合。</span>
+            <strong>/frontend-gate</strong>
+            <span>交付门禁流程。</span>
+            <strong>/git-workflow</strong>
+            <span>分支与提交规范。</span>
+            <strong>/large-project</strong>
+            <span>复杂项目分批计划。</span>
+          </div>
+          <pre><code>/git-workflow
+feature/order-status-filter</code></pre>
+        </div>
+      </section>
+
+      <section class="grid">
+        <div class="card fade-up delay-1">
+          <h2>Templates 逐项说明</h2>
+          <div class="detail">
+            <strong>development-input-template</strong>
+            <span>需求来源、范围与风险记录。</span>
+            <strong>requirement-traceability-template</strong>
+            <span>需求到实现的映射矩阵。</span>
+            <strong>development-output-template</strong>
+            <span>交付与验证结果汇总。</span>
+            <strong>change-summary-template</strong>
+            <span>变更摘要与回滚说明。</span>
+            <strong>pr-merge-checklist-template</strong>
+            <span>合并前核对清单。</span>
+          </div>
+          <pre><code>FR-02 | 筛选条件 | src/components/OrderList.vue
+说明：新增下拉框 | 验证：手测 | 状态：完成</code></pre>
+        </div>
+        <div class="card fade-up delay-2">
+          <h2>Plugins 逐项说明</h2>
+          <div class="detail">
+            <strong>Vue.volar</strong>
+            <span>Vue 语言服务与类型提示。</span>
+            <strong>dbaeumer.vscode-eslint</strong>
+            <span>ESLint 代码检查。</span>
+            <strong>esbenp.prettier-vscode</strong>
+            <span>统一格式化风格。</span>
+            <strong>path-intellisense</strong>
+            <span>路径补全与快速定位。</span>
+            <strong>gitlens</strong>
+            <span>Git 历史与 blame 信息增强。</span>
+          </div>
+          <pre><code>code --install-extension Vue.volar
+code --install-extension dbaeumer.vscode-eslint
+code --list-extensions</code></pre>
+        </div>
+        <div class="card fade-up delay-3">
+          <h2>Agent 逐项说明</h2>
+          <div class="detail">
+            <strong>@frontend</strong>
+            <span>需求驱动实现与交付文档输出。</span>
+            <strong>@frontend-review</strong>
+            <span>需求一致性与门禁审查。</span>
+          </div>
+          <pre><code>@frontend 输出需求覆盖矩阵并标注未实现项
+@frontend-review 检查是否存在需求外扩展</code></pre>
+        </div>
+      </section>
+
+      <section class="card fade-up">
+        <h2>治理规则摘要</h2>
+        <div class="callout">
+          <p>
+            1) 只实现需求文档明确范围。2) 需求不清晰时走最小实现并记录偏差。3) 输出文档
+            必须包含验证结果与风险声明。
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <strong>Tip:</strong> 更完整内容请查看仓库的 <span class="mono">.github/README.md</span> 与
+      USAGE.md。
+    </footer>
+  </body>
+</html>
